@@ -6,8 +6,5 @@
 	"exports": {
 		".": "./index.js"
 	},
-	"author": "Tito Guidotti",
-	"dependencies": {
-		"react": "^18.0.0"
-	}
+	"author": "Tito Guidotti"
 }
