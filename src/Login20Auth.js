@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, ReactNode } from "react";
-import { AuthContext } from "./authContext.jsx";
+import { AuthContext } from "./authContext.js";
 
 export default function Login20Auth({ children }) {
 	const [user, setUser] = useState(null);
