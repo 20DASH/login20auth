@@ -4,4 +4,4 @@
 
 ## Update
 
-    git add . && git commit -m "ajuste inicial" && git push
+    npm run build && git add . && git commit -m "ajuste inicial" && git push

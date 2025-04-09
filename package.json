@@ -1,10 +1,12 @@
 {
 	"name": "login20auth",
 	"version": "1.0.0",
-	"main": "index.js",
-	"type": "module",
-	"exports": {
-		".": "./index.js"
+	"scripts": {
+		"build": "babel src --out-dir dist",
+		"prepare": "npm run build"
 	},
-	"author": "Tito Guidotti"
+	"main": "dist/index.js",
+	"exports": {
+		".": "./dist/index.js"
+	}
 }
