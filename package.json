@@ -1,0 +1,13 @@
+{
+	"name": "login20auth",
+	"version": "1.0.0",
+	"main": "index.ts",
+	"type": "module",
+	"exports": {
+		".": "./index.ts"
+	},
+	"author": "Tito Guidotti",
+	"dependencies": {
+		"react": "^18.0.0"
+	}
+}
