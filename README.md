@@ -4,4 +4,4 @@
 
 ## Update
 
-    git add . && git commit -m "ajuste inicial" && git pull
+    git add . && git commit -m "ajuste inicial" && git push
