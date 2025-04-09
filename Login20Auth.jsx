@@ -4,7 +4,7 @@ import { useState, ReactNode } from "react";
 import { AuthContext } from "./authContext.jsx";
 
 export default function Login20Auth({ children }) {
-	const [user, setUser] = (useState < string) | (null > null);
+	const [user, setUser] = useState(null);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
