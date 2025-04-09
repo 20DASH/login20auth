@@ -4,7 +4,7 @@
 	"main": "index.ts",
 	"type": "module",
 	"exports": {
-		".": "./index.ts"
+		".": "./index.js"
 	},
 	"author": "Tito Guidotti",
 	"dependencies": {
