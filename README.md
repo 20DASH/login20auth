@@ -1,6 +1,6 @@
 ## Instalação
 
-    npm uninstall github:20DASH/login20auth && npm install github:20DASH/login20auth
+    npm uninstall git+https://github.com/20DASH/login20auth.git && npm install git+https://github.com/20DASH/login20auth.git
 
 ## Update
 
