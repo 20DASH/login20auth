@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"build": "babel src --out-dir dist",
+		"build-local": "babel src --out-dir ../test-app/node_modules/login20auth/dist",
 		"prepare": "npm run build"
 	},
 	"main": "dist/index.js",
