@@ -17,6 +17,8 @@
 		"@babel/preset-react": "^7.26.3"
 	},
 	"dependencies": {
-		"react": "^19.1.0"
+		"react": "^19.1.0",
+		"@azure/msal-react": "^2.2.0",
+		"@react-oauth/google": "^0.12.1"
 	}
 }
