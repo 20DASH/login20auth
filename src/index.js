@@ -8,4 +8,5 @@ export {
 	PincodeLoginPinInput,
 	PincodeLoginResendButton,
 	PincodeLoginClearButton,
+	usePincode,
 } from "./PincodeLogin.js";
