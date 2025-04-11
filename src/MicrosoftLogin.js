@@ -51,7 +51,10 @@ const MicrosoftLogin = ({ clientID, children, ...buttonProps }) => {
 	const onLoginSuccess = useCallback(
 		async (account) => {
 			try {
-				const token = await loginMicrosoft(account.idToken);
+				const token = await loginMicrosoft(
+					account.idToken,
+					projectSlug
+				);
 				saveToken(token.token);
 
 				const tokenResponse = await msalInstance.acquireTokenSilent({

@@ -1,8 +1,8 @@
-const URL = "https://iihlq3icve.execute-api.us-east-1.amazonaws.com/v1"; //url de dev
+const AUTH_URL = "https://iihlq3icve.execute-api.us-east-1.amazonaws.com/v1"; //url de dev
 
 export async function loginGoogle(tokenGoogle, projectSlug) {
 	try {
-		const response = await fetch(URL + "/google-login", {
+		const response = await fetch(AUTH_URL + "/google-login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -27,9 +27,9 @@ export async function loginGoogle(tokenGoogle, projectSlug) {
 	}
 }
 
-export async function loginMicrosoft(msToken) {
+export async function loginMicrosoft(msToken, projectSlug) {
 	const response = await fetch(
-		URL + "/ms-login",
+		AUTH_URL + "/ms-login",
 
 		{
 			method: "POST",
@@ -38,7 +38,7 @@ export async function loginMicrosoft(msToken) {
 			},
 			body: JSON.stringify({
 				token: msToken,
-				project_slug: "20deck",
+				project_slug: projectSlug,
 			}),
 		}
 	);
@@ -65,5 +65,50 @@ export async function microsoftProfilePicture(accessToken) {
 	} else {
 		console.error("Erro ao obter a imagem de perfil:", response.statusText);
 		return null;
+	}
+}
+
+export async function loginEmail(email, projectSlug) {
+	const response = await fetch(AUTH_URL + "/pincode-send", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			email: email,
+			project_slug: projectSlug,
+		}),
+	});
+	if (!response.ok) {
+		throw new Error("Email error");
+	}
+	return await response.json();
+}
+
+export async function loginPincode(pin, email, projectSlug) {
+	try {
+		const response = await fetch(AUTH_URL + "/pincode-validate", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				email: email,
+				project_slug: projectSlug,
+				pincode: pin,
+			}),
+		});
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			console.error("Error:", errorData);
+			return errorData;
+		}
+
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.error("Network or other error:", error);
+		return { error: "Um erro inesperado ocorreu. Tente novamente" };
 	}
 }
