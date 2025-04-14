@@ -6,7 +6,7 @@ const PincodeContext = createContext();
 
 export const usePincode = () => useContext(PincodeContext);
 
-export const PincodeLoginForm = ({ children, ...props }) => {
+export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 	const { saveToken, projectSlug, onStartLogin, onError } = useAuth();
 
 	const [emailValue, setEmailValue] = useState("");
@@ -55,6 +55,7 @@ export const PincodeLoginForm = ({ children, ...props }) => {
 					} else {
 						sendEmail();
 					}
+					onSubmit && onSubmit(e);
 				}}
 				{...props}
 			>
