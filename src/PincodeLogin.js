@@ -89,6 +89,7 @@ export const PincodeLoginPinInput = ({ onChange = () => {}, ...props }) => {
 		<input
 			type="text"
 			placeholder="pin"
+			autoComplete="off"
 			value={pinValue}
 			onChange={(e) => {
 				setPinValue(e.target.value);
@@ -108,6 +109,7 @@ export const PincodeLoginClearButton = ({
 
 	return (
 		<button
+			type="button"
 			onClick={(e) => {
 				setEmailValue("");
 				setEmailSent(false);
@@ -129,6 +131,7 @@ export const PincodeLoginResendButton = ({
 
 	return (
 		<button
+			type="button"
 			onClick={(e) => {
 				sendEmail();
 				onClick(e);
