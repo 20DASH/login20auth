@@ -9,14 +9,14 @@ export const usePincode = () => useContext(PincodeContext);
 export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 	const { saveToken, projectSlug, onStartLogin, onError } = useAuth();
 
-	const [emailValue, setEmailValue] = useState("");
+	const [email, setEmailValue] = useState("");
 	const [pinValue, setPinValue] = useState("");
 	const [emailSent, setEmailSent] = useState(false);
 
 	const sendEmail = () => {
-		if (emailValue) {
+		if (email) {
 			setEmailSent(true);
-			loginEmail(emailValue, projectSlug)
+			loginEmail(email, projectSlug)
 				.then((r) => saveToken(r.token))
 				.catch((e) => {
 					setEmailSent(false);
@@ -32,7 +32,7 @@ export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 	return (
 		<PincodeContext.Provider
 			value={{
-				emailValue,
+				email,
 				setEmailValue,
 				pinValue,
 				setPinValue,
@@ -46,7 +46,7 @@ export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 					e.preventDefault();
 					if (emailSent) {
 						if (pinValue) {
-							loginPincode(pinValue, emailValue, projectSlug)
+							loginPincode(pinValue, email, projectSlug)
 								.then((r) => saveToken(r.token))
 								.catch(onError);
 						} else {
@@ -66,13 +66,13 @@ export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 };
 
 export const PincodeLoginEmailInput = ({ onChange = () => {}, ...props }) => {
-	const { emailValue, setEmailValue } = usePincode();
+	const { email, setEmailValue } = usePincode();
 
 	return (
 		<input
 			type="email"
 			placeholder="email"
-			value={emailValue}
+			value={email}
 			onChange={(e) => {
 				setEmailValue(e.target.value);
 				onChange(e);
