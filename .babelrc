@@ -1,6 +1,12 @@
 {
   "presets": [
-    ["@babel/preset-react", { "runtime": "automatic" }],
-    "@babel/preset-env"
+    ["@babel/preset-env", {
+      "modules": "auto",
+      "targets": "defaults, not IE 11"
+    }],
+    ["@babel/preset-react", {
+      "runtime": "automatic",
+      "importSource": "react"
+    }]
   ]
 }

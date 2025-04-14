@@ -2,13 +2,24 @@
 	"name": "login20auth",
 	"version": "1.0.0",
 	"scripts": {
-		"build": "babel src --out-dir dist",
-		"build-local": "babel src --out-dir ../test-app/node_modules/login20auth/dist",
-		"prepare": "npm run build"
+		"build": "babel src --out-dir dist --extensions \".js,.jsx\"",
+		"prepare": "npm run build",
+		"prepublishOnly": "npm run build"
 	},
 	"main": "dist/index.js",
+	"module": "dist/index.js",
 	"exports": {
-		".": "./dist/index.js"
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"peerDependencies": {
+		"react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+		"react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.27.0",
@@ -17,7 +28,6 @@
 		"@babel/preset-react": "^7.26.3"
 	},
 	"dependencies": {
-		"react": "^19.1.0",
 		"@azure/msal-react": "^2.2.0",
 		"@react-oauth/google": "^0.12.1"
 	}

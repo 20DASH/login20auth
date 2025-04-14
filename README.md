@@ -16,15 +16,9 @@ No momento, 20AUTH suporta três tipos de login:
 npm install git+https://github.com/20DASH/login20auth.git
 ```
 
-No Next.js, também precisa que seja instalado:
-
-```bash
-npm i next-transpile-modules
-```
-
 ## Compatibilidade
 
-Foi testado somente com Next.js, mas deveria funcionar com Vite também.
+Foi testado no Next.js e Vite.
 
 ## Update
 
