@@ -6,17 +6,17 @@ const PincodeContext = createContext();
 
 export const usePincode = () => useContext(PincodeContext);
 
-export const PincodeLoginForm = ({ children, ...props }) => {
+export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 	const { saveToken, projectSlug, onStartLogin, onError } = useAuth();
 
-	const [emailValue, setEmailValue] = useState("");
+	const [email, setEmailValue] = useState("");
 	const [pinValue, setPinValue] = useState("");
 	const [emailSent, setEmailSent] = useState(false);
 
 	const sendEmail = () => {
-		if (emailValue) {
+		if (email) {
 			setEmailSent(true);
-			loginEmail(emailValue, projectSlug)
+			loginEmail(email, projectSlug)
 				.then((r) => saveToken(r.token))
 				.catch((e) => {
 					setEmailSent(false);
@@ -32,7 +32,7 @@ export const PincodeLoginForm = ({ children, ...props }) => {
 	return (
 		<PincodeContext.Provider
 			value={{
-				emailValue,
+				email,
 				setEmailValue,
 				pinValue,
 				setPinValue,
@@ -46,7 +46,7 @@ export const PincodeLoginForm = ({ children, ...props }) => {
 					e.preventDefault();
 					if (emailSent) {
 						if (pinValue) {
-							loginPincode(pinValue, emailValue, projectSlug)
+							loginPincode(pinValue, email, projectSlug)
 								.then((r) => saveToken(r.token))
 								.catch(onError);
 						} else {
@@ -55,6 +55,7 @@ export const PincodeLoginForm = ({ children, ...props }) => {
 					} else {
 						sendEmail();
 					}
+					onSubmit && onSubmit("Sumbitedd");
 				}}
 				{...props}
 			>
@@ -65,13 +66,13 @@ export const PincodeLoginForm = ({ children, ...props }) => {
 };
 
 export const PincodeLoginEmailInput = ({ onChange = () => {}, ...props }) => {
-	const { emailValue, setEmailValue } = usePincode();
+	const { email, setEmailValue } = usePincode();
 
 	return (
 		<input
 			type="email"
 			placeholder="email"
-			value={emailValue}
+			value={email}
 			onChange={(e) => {
 				setEmailValue(e.target.value);
 				onChange(e);
@@ -88,6 +89,7 @@ export const PincodeLoginPinInput = ({ onChange = () => {}, ...props }) => {
 		<input
 			type="text"
 			placeholder="pin"
+			autoComplete="off"
 			value={pinValue}
 			onChange={(e) => {
 				setPinValue(e.target.value);
@@ -107,6 +109,7 @@ export const PincodeLoginClearButton = ({
 
 	return (
 		<button
+			type="button"
 			onClick={(e) => {
 				setEmailValue("");
 				setEmailSent(false);
@@ -128,6 +131,7 @@ export const PincodeLoginResendButton = ({
 
 	return (
 		<button
+			type="button"
 			onClick={(e) => {
 				sendEmail();
 				onClick(e);
