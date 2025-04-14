@@ -217,3 +217,7 @@ export default function Page() {
 	);
 }
 ```
+
+# A fazer
+
+-   Consertar login por email e pincode

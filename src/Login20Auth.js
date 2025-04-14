@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { AuthContext } from "./authContext.js";
+import { AuthContext, parseToken } from "./authContext.js";
 
 export default function Login20Auth({
 	children,
@@ -16,12 +16,8 @@ export default function Login20Auth({
 	const saveToken = (newToken) => {
 		if (newToken) {
 			localStorage.setItem("token", newToken);
-			const dataAtual = new Date();
-			dataAtual.setDate(dataAtual.getDate() + 29);
-			localStorage.setItem("expDate", dataAtual);
 		} else {
 			localStorage.removeItem("token");
-			localStorage.removeItem("expDate");
 			localStorage.removeItem("profilePic");
 			setProfilePic(null);
 		}
@@ -43,6 +39,22 @@ export default function Login20Auth({
 		setToken(localStorage.getItem("token"));
 		setProfilePic(localStorage.getItem("profilePic"));
 	}, []);
+
+	useEffect(() => {
+		if (token) {
+			try {
+				let tokenExpDate = parseToken(token).exp;
+				if (!tokenExpDate) throw Error();
+				if (Date.now() / 1000 > tokenExpDate) {
+					onError("expired token");
+					setToken(null);
+				}
+			} catch (error) {
+				onError("invalid token");
+				setToken(null);
+			}
+		}
+	}, [token]);
 
 	const contextValue = {
 		token,
