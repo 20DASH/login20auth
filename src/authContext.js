@@ -25,6 +25,7 @@ export const AuthContext = createContext({
 	projectSlug: null,
 	onStartLogin: () => {},
 	onError: () => {},
+	org: null,
 });
 
 export const useAuth = () => useContext(AuthContext);

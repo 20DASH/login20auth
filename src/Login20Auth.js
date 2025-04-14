@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { AuthContext, parseToken } from "./authContext.js";
+import * as api from "./API.js";
 
 export default function Login20Auth({
 	children,
@@ -65,6 +66,27 @@ export default function Login20Auth({
 		projectSlug,
 		onStartLogin,
 		onError,
+		org: token
+			? {
+					create: (name) =>
+						api.CreateOrganization(name, token, projectSlug),
+					switch: (orgID) =>
+						api.SwitchOrganization(orgID, token, projectSlug),
+					members: () =>
+						api.ListOrganizationMembers(token, projectSlug),
+					addMember: (email, role) =>
+						api.AddOrganizationMember(
+							token,
+							email,
+							role,
+							projectSlug
+						),
+					deleteMember: (email) =>
+						api.DeleteOrganizationMember(token, email, projectSlug),
+					delete: () => api.DeleteOrganization(token, projectSlug),
+					leave: () => api.LeaveOrganization(token, projectSlug),
+			  }
+			: null,
 	};
 
 	return (

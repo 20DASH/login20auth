@@ -112,3 +112,102 @@ export async function loginPincode(pin, email, projectSlug) {
 		return { error: "Um erro inesperado ocorreu. Tente novamente" };
 	}
 }
+
+// ORG APIs
+
+export async function CreateOrganization(name, token, projectSlug) {
+	const response = await fetch(AUTH_URL + "/create-org", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: token,
+		},
+		body: JSON.stringify({ name: name, project_slug: projectSlug }),
+	});
+
+	return await response.json();
+}
+
+export async function SwitchOrganization(orgID, token, projectSlug) {
+	const response = await fetch(AUTH_URL + "/switch-org", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: token,
+		},
+		body: JSON.stringify({ org_id: orgID, project_slug: projectSlug }),
+	});
+
+	return await response.json();
+}
+
+export async function ListOrganizationMembers(token, projectSlug) {
+	const response = await fetch(
+		AUTH_URL + "/list-members?project_slug=" + projectSlug,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		}
+	);
+
+	return await response.json();
+}
+
+export async function AddOrganizationMember(token, email, role, projectSlug) {
+	const response = await fetch(AUTH_URL + "/add-user-to-org", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: token,
+		},
+		body: JSON.stringify({
+			email: email,
+			project_slug: projectSlug,
+			role: role,
+		}),
+	});
+
+	return await response.json();
+}
+
+export async function DeleteOrganizationMember(token, email, projectSlug) {
+	const response = await fetch(AUTH_URL + "/remove-user-from-org", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: token,
+		},
+		body: JSON.stringify({ email: email, project_slug: projectSlug }),
+	});
+
+	return await response.json();
+}
+
+export async function DeleteOrganization(token, projectSlug) {
+	const response = await fetch(AUTH_URL + "/delete-org", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: token,
+		},
+		body: JSON.stringify({ project_slug: projectSlug }),
+	});
+
+	return await response.json();
+}
+
+export async function LeaveOrganization(token, projectSlug) {
+	const response = await fetch(AUTH_URL + "/leave-org", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: token,
+		},
+		body: JSON.stringify({ project_slug: projectSlug }),
+	});
+
+	return await response.json();
+}
