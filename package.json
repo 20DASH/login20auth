@@ -2,18 +2,24 @@
 	"name": "login20auth",
 	"version": "1.0.0",
 	"scripts": {
-		"build:cjs": "babel src --out-file dist/index.js --extensions .js,.jsx",
-		"build:esm": "babel src --out-file dist/index.esm.js --extensions .js,.jsx --env-name esm",
-		"build": "npm run build:cjs && npm run build:esm",
-		"prepare": "npm run build"
+		"build": "babel src --out-dir dist --extensions \".js,.jsx\"",
+		"prepare": "npm run build",
+		"prepublishOnly": "npm run build"
 	},
 	"main": "dist/index.js",
-	"module": "dist/index.esm.js",
+	"module": "dist/index.js",
 	"exports": {
 		".": {
-			"require": "./dist/index.js",
-			"import": "./dist/index.esm.js"
+			"import": "./dist/index.js",
+			"require": "./dist/index.js"
 		}
+	},
+	"files": [
+		"dist"
+	],
+	"peerDependencies": {
+		"react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+		"react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.27.0",
@@ -22,7 +28,6 @@
 		"@babel/preset-react": "^7.26.3"
 	},
 	"dependencies": {
-		"react": "^19.1.0",
 		"@azure/msal-react": "^2.2.0",
 		"@react-oauth/google": "^0.12.1"
 	}
