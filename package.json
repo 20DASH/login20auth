@@ -2,13 +2,18 @@
 	"name": "login20auth",
 	"version": "1.0.0",
 	"scripts": {
-		"build": "babel src --out-dir dist",
-		"build-local": "babel src --out-dir ../test-app/node_modules/login20auth/dist",
+		"build:cjs": "babel src --out-dir dist --extensions .js,.jsx --ignore **/*.test.js",
+		"build:esm": "babel src --out-dir dist --extensions .js,.jsx --ignore **/*.test.js --env-name esm",
+		"build": "npm run build:cjs && npm run build:esm",
 		"prepare": "npm run build"
 	},
 	"main": "dist/index.js",
+	"module": "dist/index.esm.js",
 	"exports": {
-		".": "./dist/index.js"
+		".": {
+			"require": "./dist/index.js",
+			"import": "./dist/index.esm.js"
+		}
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.27.0",
