@@ -55,7 +55,7 @@ export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 					} else {
 						sendEmail();
 					}
-					onSubmit && onSubmit(e);
+					onSubmit && onSubmit("Sumbitedd");
 				}}
 				{...props}
 			>
