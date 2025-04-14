@@ -4,7 +4,7 @@ import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { loginGoogle } from "./API";
 import { useAuth } from "./authContext.js";
 
-const InnerComponent = ({ children, ...buttonProps }) => {
+const InnerComponent = ({ onClick, children, ...buttonProps }) => {
 	const { saveToken, savePic, projectSlug, onStartLogin, onError } =
 		useAuth();
 
@@ -34,11 +34,13 @@ const InnerComponent = ({ children, ...buttonProps }) => {
 
 	return (
 		<button
-			{...buttonProps}
-			onClick={() => {
-				onStartLogin(); // optionally call again here before Google popup
+			type="button"
+			onClick={(e) => {
+				onClick && onClick(e);
+				onStartLogin();
 				handleGLogin();
 			}}
+			{...buttonProps}
 		>
 			{children}
 		</button>
