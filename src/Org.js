@@ -2,7 +2,18 @@ import { useEffect } from "react";
 import * as api from "./API.js";
 import { parseToken, useAuth } from "./authContext.js";
 
-const OrgContext = createContext({});
+const OrgContext = createContext({
+	orgList: [],
+	currentOrgID: null,
+	isAdmin: false,
+	createOrg: async () => {},
+	switchOrg: async () => {},
+	orgMembers: async () => {},
+	addOrUpdateOrgMember: async () => {},
+	deleteOrgMember: async () => {},
+	deleteOrg: async () => {},
+	leaveOrg: async () => {},
+});
 
 export const useOrg = () => useContext(AuthContext);
 
@@ -10,7 +21,6 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 	const { token, saveToken, logout } = useAuth();
 
 	const [orgList, setOrgList] = useState([]);
-	const [orgInfo, setOrgInfo] = useState({});
 	const [currentOrgID, setCurrentOrgID] = useState(null);
 	const [isAdmin, setIsAdmin] = useState(false);
 
@@ -22,7 +32,6 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 			setIsAdmin(parsedToken.role === "admin");
 		} else {
 			setOrgList([]);
-			setOrgInfo({});
 			setIsAdmin(false);
 		}
 	}, [token]);
@@ -31,9 +40,7 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 		<OrgContext.Provider
 			value={{
 				orgList: orgList,
-				orgInfo: orgInfo,
-				currentOrgID,
-				currentOrgID,
+				currentOrgID: currentOrgID,
 				isAdmin: isAdmin,
 				createOrg: async (name) => {
 					try {
