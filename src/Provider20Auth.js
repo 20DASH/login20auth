@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext, parseToken } from "./authContext.js";
 
-export default function Login20Auth({
+export default function Provider20Auth({
 	children,
 	content,
 	projectSlug,
@@ -69,7 +69,7 @@ export default function Login20Auth({
 
 	return (
 		<AuthContext.Provider value={contextValue}>
-			{token ? content : children}
+			{children}
 		</AuthContext.Provider>
 	);
 }
