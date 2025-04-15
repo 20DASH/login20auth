@@ -1,7 +1,7 @@
 // GoogleLogin.js
 import React from "react";
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
-import { loginGoogle } from "./API";
+import { loginGoogle } from "./API.js";
 import { useAuth } from "./authContext.js";
 
 const InnerComponent = ({ onClick, children, ...buttonProps }) => {

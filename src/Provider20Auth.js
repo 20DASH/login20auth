@@ -5,11 +5,16 @@ import { AuthContext, parseToken } from "./authContext.js";
 
 export default function Provider20Auth({
 	children,
-	content,
 	projectSlug,
 	onError = () => {},
 	onStartLogin = () => {},
 }) {
+	if (!projectSlug) {
+		throw Error(
+			"projectSlug precisa ser definido como um parametro de Provider20Auth "
+		);
+	}
+
 	const [token, setToken] = useState(null);
 	const [profilePic, setProfilePic] = useState(null);
 

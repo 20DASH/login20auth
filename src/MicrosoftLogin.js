@@ -7,7 +7,7 @@ import {
 } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 
-import { loginMicrosoft, microsoftProfilePicture } from "./API";
+import { loginMicrosoft, microsoftProfilePicture } from "./API.js";
 import { useAuth } from "./authContext.js";
 
 const MicrosoftLogin = ({ clientID, children, onClick, ...buttonProps }) => {

@@ -1,5 +1,4 @@
-import React from "react";
-import { useAuth } from "./authContext";
+import { useAuth } from "./authContext.js";
 
 const LoginWall = ({ login, children }) => {
 	const { token } = useAuth();

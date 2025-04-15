@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
-import { loginEmail, loginPincode } from "./API";
+import { loginEmail, loginPincode } from "./API.js";
 import { useAuth } from "./authContext.js";
 
 const PincodeContext = createContext();
 
-export const usePincode = () => useContext(PincodeContext);
+const usePincode = () => useContext(PincodeContext);
 
-export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
+const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 	const { saveToken, projectSlug, onStartLogin, onError } = useAuth();
 
 	const [email, setEmailValue] = useState("");
@@ -65,7 +65,7 @@ export const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 	);
 };
 
-export const PincodeLoginEmailInput = ({ onChange = () => {}, ...props }) => {
+const PincodeLoginEmailInput = ({ onChange = () => {}, ...props }) => {
 	const { email, setEmailValue } = usePincode();
 
 	return (
@@ -82,7 +82,7 @@ export const PincodeLoginEmailInput = ({ onChange = () => {}, ...props }) => {
 	);
 };
 
-export const PincodeLoginPinInput = ({ onChange = () => {}, ...props }) => {
+const PincodeLoginPinInput = ({ onChange = () => {}, ...props }) => {
 	const { pinValue, setPinValue } = usePincode();
 
 	return (
@@ -100,7 +100,7 @@ export const PincodeLoginPinInput = ({ onChange = () => {}, ...props }) => {
 	);
 };
 
-export const PincodeLoginClearButton = ({
+const PincodeLoginClearButton = ({
 	onClick = () => {},
 	children,
 	...props
@@ -122,7 +122,7 @@ export const PincodeLoginClearButton = ({
 	);
 };
 
-export const PincodeLoginResendButton = ({
+const PincodeLoginResendButton = ({
 	onClick = () => {},
 	children,
 	...props
@@ -142,3 +142,14 @@ export const PincodeLoginResendButton = ({
 		</button>
 	);
 };
+
+const Pincode = {
+	Form: PincodeLoginForm,
+	EmailInput: PincodeLoginEmailInput,
+	PinInput: PincodeLoginPinInput,
+	ResendButton: PincodeLoginResendButton,
+	ClearButton: PincodeLoginClearButton,
+	usePincode,
+};
+
+export default Pincode;
