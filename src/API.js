@@ -1,4 +1,7 @@
-const AUTH_URL = "https://iihlq3icve.execute-api.us-east-1.amazonaws.com/v1"; //url de dev
+//prod_url: 'https://fm6byp3vsk.execute-api.us-east-1.amazonaws.com/v1'
+//dev_url: 'https://iihlq3icve.execute-api.us-east-1.amazonaws.com/v1'
+
+const AUTH_URL = "https://fm6byp3vsk.execute-api.us-east-1.amazonaws.com/v1";
 
 export async function loginGoogle(tokenGoogle, projectSlug) {
 	try {
