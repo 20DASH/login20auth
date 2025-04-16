@@ -41,7 +41,7 @@ Hook que fornece informações sobre a autenticação do usuário.
 
 -   `logout: function` – Função para desonectar o usuário.
 
-> **Nota:** Deve ser usado dentro de um `<Login20Auth>`.
+> **Nota:** Deve ser usado dentro de um `<Provider20Auth>`.
 
 ---
 
@@ -57,16 +57,42 @@ Hook que fornece o estado da autenticação via pincode.
 
 ---
 
+### `useOrg()`
+
+Hook que fornece informações das organizações do usuário e métodos para interagir com elas
+
+#### Retorna:
+
+-   `orgList: [{id: string, name: string}]` - lista organizações que o usuário pertence
+-   `currentOrgID: string`
+-   `isAdmin: bool`
+-   `createOrg: async function(name)` - Cria uma nova organização e acessa ela
+-   `switchOrg: async function(id)` - acessa uma organização
+-   `orgMembers: async function` - lista todos os membros de uma organização
+-   `addOrUpdateOrgMember: async function(email, role)` - Adiciona um membro com role na organização atual. Se já for membro, só atualiza o seu role (que pode ser `"admin" | "user"`)
+-   `deleteOrgMember: async function(email)`
+-   `deleteOrg: async function` - Exclui uma organização. Se for a única, sera deslogado; se não, irá acessar outra
+-   `leaveOrg: async function` - Sai da organização atual. Se for a única, sera deslogado; se não, irá acessar outra
+
+> **Nota:** Deve ser usado dentro de um `<OrgProvider>`.
+
+---
+
 ## 📦 Componentes
 
-### `<Login20Auth>`
+### `<Provider20Auth>`
 
 Componente Provider que disponibiliza o contexto de autenticação via `useAuth`. Ele possui os props:
 
--   `content`: O que exibir quando o ttoken do usuário não for _null_
 -   `projectSlug`: identificador do projeto
 -   `onStartLogin` (opcional): função para ser chamada quando entrar num dialogo com um provedor de oauth ou ao enviar o email
 -   `onError`(opcional): função para ser chamada em erros de login
+
+### `<LoginWall>`
+
+Componente que só exibe os filhos de usuário estiver autenticado. Possui o prop:
+
+-   `login`: elemento para ser exibido se não estiver autenticado, normalmente o formulário de login. O dormulário deve ser composto pelos elementos a seguir.
 
 ### `<GoogleLogin>`
 
@@ -144,17 +170,13 @@ Internamente é um `<button>` e aceita todas as props nativas de um.
 ```jsx
 "use client";
 import {
-	useAuth,
-	Login20Auth,
+	Provider20Auth,
+	LoginWall,
 	GoogleLogin,
 	MicrosoftLogin,
-	PincodeLoginForm,
-	PincodeLoginEmailInput,
-	PincodeLoginPinInput,
-	PincodeLoginClearButton,
-	PincodeLoginResendButton,
-	usePincode,
+	Pincode
 } from "login20auth";
+
 
 function Dashboard() {
 	const { token, logout, profilePic } = useAuth();
@@ -195,19 +217,25 @@ export default function Page() {
 	const handleError = (err) => console.log("Login error:", err);
 
 	return (
-		<Login20Auth
-			content={<Dashboard />}
+		<Provider20Auth
+
 			projectSlug="..."
 			onStartLogin={handleStart}
 			onError={handleError}
 		>
-			<GoogleLogin clientID="..."> Google </GoogleLogin>
-			<MicrosoftLogin clientID="..."> Microsoft </MicrosoftLogin>
-			<PincodeLoginForm>
-                <!--Usa um componente aninhado para permitir usePincode-->
-				<MyPincodeFields />
-			</PincodeLoginForm>
-		</Login20Auth>
+			<LoginWall login={
+				<>
+					<GoogleLogin clientID="..."> Google </GoogleLogin>
+					<MicrosoftLogin clientID="..."> Microsoft </MicrosoftLogin>
+					<PincodeLoginForm>
+						<!--Usa um componente aninhado para permitir usePincode-->
+						<MyPincodeFields />
+					</PincodeLoginForm>
+				</>
+			}>
+				<Dashboard />
+			</ LoginWall>
+		</Provider20Auth>
 	);
 }
 ```
