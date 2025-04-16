@@ -6,8 +6,7 @@ import { AuthContext, parseToken } from "./authContext.js";
 export default function Provider20Auth({
 	children,
 	projectSlug,
-	onError = () => {},
-	onStartLogin = () => {},
+	onError=(err)=>{}
 }) {
 	if (!projectSlug) {
 		throw Error(
@@ -51,11 +50,11 @@ export default function Provider20Auth({
 				let tokenExpDate = parseToken(token).exp;
 				if (!tokenExpDate) throw Error();
 				if (Date.now() / 1000 > tokenExpDate) {
-					onError("expired token");
+					onError("Expired token");
 					setToken(null);
 				}
 			} catch (error) {
-				onError("invalid token");
+				onError("Invalid token");
 				setToken(null);
 			}
 		}
@@ -67,9 +66,7 @@ export default function Provider20Auth({
 		saveToken,
 		savePic,
 		profilePic,
-		projectSlug,
-		onStartLogin,
-		onError,
+		projectSlug
 	};
 
 	return (

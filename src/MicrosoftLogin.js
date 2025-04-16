@@ -10,8 +10,8 @@ import { MsalProvider } from "@azure/msal-react";
 import { loginMicrosoft, microsoftProfilePicture } from "./API.js";
 import { useAuth } from "./authContext.js";
 
-const MicrosoftLogin = ({ clientID, children, onClick, ...buttonProps }) => {
-	const { saveToken, savePic, projectSlug, onStartLogin, onError } =
+const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>{}, onError=(message)=>{}, ...buttonProps }) => {
+	const { saveToken, savePic, projectSlug } =
 		useAuth();
 
 	const msalConfig = {
@@ -110,7 +110,7 @@ const MicrosoftLogin = ({ clientID, children, onClick, ...buttonProps }) => {
 			<button
 				type="button"
 				onClick={(e) => {
-					onClick && onClick(e);
+					onClick(e);
 					onStartLogin();
 					handleMsLogin();
 				}}

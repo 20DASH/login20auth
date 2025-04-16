@@ -6,8 +6,8 @@ const PincodeContext = createContext();
 
 const usePincode = () => useContext(PincodeContext);
 
-const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
-	const { saveToken, projectSlug, onStartLogin, onError } = useAuth();
+const PincodeLoginForm = ({ onSubmit, children, onStartLogin=()=>{}, onError=()=>{}, ...props }) => {
+	const { saveToken, projectSlug } = useAuth();
 
 	const [email, setEmailValue] = useState("");
 	const [pinValue, setPinValue] = useState("");
@@ -101,7 +101,7 @@ const PincodeLoginPinInput = ({ onChange = () => {}, ...props }) => {
 };
 
 const PincodeLoginClearButton = ({
-	onClick = () => {},
+	onClick = (e) => {},
 	children,
 	...props
 }) => {
@@ -123,7 +123,7 @@ const PincodeLoginClearButton = ({
 };
 
 const PincodeLoginResendButton = ({
-	onClick = () => {},
+	onClick = (e) => {},
 	children,
 	...props
 }) => {
