@@ -4,8 +4,8 @@ import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { loginGoogle } from "./API.js";
 import { useAuth } from "./authContext.js";
 
-const InnerComponent = ({ onClick, children, ...buttonProps }) => {
-	const { saveToken, savePic, projectSlug, onStartLogin, onError } =
+const InnerComponent = ({ onClick, children, onStartLogin, onError, ...buttonProps }) => {
+	const { saveToken, savePic, projectSlug } =
 		useAuth();
 
 	const handleGLogin = useGoogleLogin({
@@ -36,7 +36,7 @@ const InnerComponent = ({ onClick, children, ...buttonProps }) => {
 		<button
 			type="button"
 			onClick={(e) => {
-				onClick && onClick(e);
+				onClick(e);
 				onStartLogin();
 				handleGLogin();
 			}}
@@ -47,10 +47,10 @@ const InnerComponent = ({ onClick, children, ...buttonProps }) => {
 	);
 };
 
-const GoogleLogin = ({ clientID, children, ...buttonProps }) => {
+const GoogleLogin = ({ clientID, children, onStartLogin=()=>{}, onError=()=>{}, onClick=(e)=>{}, ...buttonProps }) => {
 	return (
 		<GoogleOAuthProvider clientId={clientID}>
-			<InnerComponent {...buttonProps}>{children}</InnerComponent>
+			<InnerComponent onStartLogin={onStartLogin} onError={onError} onClick={onClick} {...buttonProps}>{children}</InnerComponent>
 		</GoogleOAuthProvider>
 	);
 };

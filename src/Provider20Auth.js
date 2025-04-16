@@ -5,9 +5,7 @@ import { AuthContext, parseToken } from "./authContext.js";
 
 export default function Provider20Auth({
 	children,
-	projectSlug,
-	onError = () => {},
-	onStartLogin = () => {},
+	projectSlug
 }) {
 	if (!projectSlug) {
 		throw Error(
@@ -67,9 +65,7 @@ export default function Provider20Auth({
 		saveToken,
 		savePic,
 		profilePic,
-		projectSlug,
-		onStartLogin,
-		onError,
+		projectSlug
 	};
 
 	return (
