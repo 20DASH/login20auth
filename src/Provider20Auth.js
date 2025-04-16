@@ -49,11 +49,11 @@ export default function Provider20Auth({
 				let tokenExpDate = parseToken(token).exp;
 				if (!tokenExpDate) throw Error();
 				if (Date.now() / 1000 > tokenExpDate) {
-					onError("expired token");
+					//onError("expired token");
 					setToken(null);
 				}
 			} catch (error) {
-				onError("invalid token");
+				//onError("invalid token");
 				setToken(null);
 			}
 		}

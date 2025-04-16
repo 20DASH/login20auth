@@ -47,7 +47,7 @@ const InnerComponent = ({ onClick, children, onStartLogin, onError, ...buttonPro
 	);
 };
 
-const GoogleLogin = ({ clientID, children, onStartLogin=()=>{}, onError=()=>{}, onClick=(e)=>{}, ...buttonProps }) => {
+const GoogleLogin = ({ clientID, children, onStartLogin=()=>{}, onError=(err)=>{}, onClick=(e)=>{}, ...buttonProps }) => {
 	return (
 		<GoogleOAuthProvider clientId={clientID}>
 			<InnerComponent onStartLogin={onStartLogin} onError={onError} onClick={onClick} {...buttonProps}>{children}</InnerComponent>
