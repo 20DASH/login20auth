@@ -51,6 +51,10 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 	const onLoginSuccess = useCallback(
 		async (account) => {
 			try {
+				console.log("token da microsoft: ", account.idToken);
+				console.log("projectSlug: ", projectSlug);
+
+				
 				const token = await loginMicrosoft(
 					account.idToken,
 					projectSlug
