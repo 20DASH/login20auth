@@ -68,7 +68,7 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 			} catch (error) {
 				onError(error);
 			} finally {
-				sessionStorage.clear();
+				//sessionStorage.clear();
 			}
 		},
 		[loginMicrosoft, microsoftProfilePicture, msalInstance]
