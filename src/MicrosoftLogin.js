@@ -67,8 +67,6 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 				savePic(profilePic);
 			} catch (error) {
 				onError(error);
-			} finally {
-				//sessionStorage.clear();
 			}
 		},
 		[loginMicrosoft, microsoftProfilePicture, msalInstance]
@@ -89,6 +87,7 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 	}, [msalInstance, onLoginSuccess]);
 
 	const handleMsLogin = () => {
+		sessionStorage.clear();
 		msalInstance
 			.loginPopup({
 				scopes: [
