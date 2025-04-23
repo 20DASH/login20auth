@@ -55,6 +55,7 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 					account.idToken,
 					projectSlug
 				);
+				console.log("token recebido da nossa API: ", token);
 				saveToken(token.token);
 
 				const tokenResponse = await msalInstance.acquireTokenSilent({
