@@ -86,7 +86,7 @@ Componente Provider que disponibiliza o contexto de autenticação via `useAuth`
 
 -   `projectSlug`: identificador do projeto
 -   `onStartLogin` (opcional): função para ser chamada quando entrar num dialogo com um provedor de oauth ou ao enviar o email
--   `onError`(opcional): função para ser chamada em erros de login
+-   `onError`(opcional): função para ser chamada em erros no token. Os erros possíveis são as strings: `"Expired token"` e `"Invalid token"`
 -   `isProd`(opcional): booleano se deve usar ambiente de autenticação dev ou prod. Por padrão, é `true`
 
 ### `<LoginWall>`
@@ -214,9 +214,9 @@ export default function Page() {
 
 	return (
 		<Provider20Auth
-
 			projectSlug="..."
 			isProd={false}
+			onError = {e => console.log(e)}
 		>
 			<LoginWall
 				login={
