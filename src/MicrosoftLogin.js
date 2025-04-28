@@ -7,12 +7,17 @@ import {
 } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 
-import { loginMicrosoft, microsoftProfilePicture } from "./API.js";
 import { useAuth } from "./authContext.js";
 
-const MicrosoftLogin = ({ clientID, children, onClick, ...buttonProps }) => {
-	const { saveToken, savePic, projectSlug, onStartLogin, onError } =
-		useAuth();
+const MicrosoftLogin = ({
+	clientID,
+	children,
+	onClick = (e) => {},
+	onStartLogin = () => {},
+	onError = (message) => {},
+	...buttonProps
+}) => {
+	const { saveToken, savePic, projectSlug, API } = useAuth();
 
 	const msalConfig = {
 		auth: {
@@ -51,27 +56,29 @@ const MicrosoftLogin = ({ clientID, children, onClick, ...buttonProps }) => {
 	const onLoginSuccess = useCallback(
 		async (account) => {
 			try {
-				const token = await loginMicrosoft(
+				console.log("token da microsoft: ", account.idToken);
+				console.log("projectSlug: ", projectSlug);
+
+				const token = await API.loginMicrosoft(
 					account.idToken,
 					projectSlug
 				);
+				console.log("token recebido da nossa API: ", token);
 				saveToken(token.token);
 
 				const tokenResponse = await msalInstance.acquireTokenSilent({
 					scopes: ["User.Read"],
 					account: account,
 				});
-				const profilePic = await microsoftProfilePicture(
+				const profilePic = await API.microsoftProfilePicture(
 					tokenResponse.accessToken
 				);
 				savePic(profilePic);
 			} catch (error) {
 				onError(error);
-			} finally {
-				sessionStorage.clear();
 			}
 		},
-		[loginMicrosoft, microsoftProfilePicture, msalInstance]
+		[API, msalInstance]
 	);
 
 	useEffect(() => {
@@ -89,6 +96,7 @@ const MicrosoftLogin = ({ clientID, children, onClick, ...buttonProps }) => {
 	}, [msalInstance, onLoginSuccess]);
 
 	const handleMsLogin = () => {
+		sessionStorage.clear();
 		msalInstance
 			.loginPopup({
 				scopes: [
@@ -110,7 +118,7 @@ const MicrosoftLogin = ({ clientID, children, onClick, ...buttonProps }) => {
 			<button
 				type="button"
 				onClick={(e) => {
-					onClick && onClick(e);
+					onClick(e);
 					onStartLogin();
 					handleMsLogin();
 				}}

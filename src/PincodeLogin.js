@@ -1,13 +1,18 @@
 import React, { createContext, useContext, useState } from "react";
-import { loginEmail, loginPincode } from "./API.js";
 import { useAuth } from "./authContext.js";
 
 const PincodeContext = createContext();
 
 const usePincode = () => useContext(PincodeContext);
 
-const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
-	const { saveToken, projectSlug, onStartLogin, onError } = useAuth();
+const PincodeLoginForm = ({
+	onSubmit,
+	children,
+	onStartLogin = () => {},
+	onError = () => {},
+	...props
+}) => {
+	const { saveToken, projectSlug, API } = useAuth();
 
 	const [email, setEmailValue] = useState("");
 	const [pinValue, setPinValue] = useState("");
@@ -16,7 +21,7 @@ const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 	const sendEmail = () => {
 		if (email) {
 			setEmailSent(true);
-			loginEmail(email, projectSlug)
+			API.loginEmail(email, projectSlug)
 				.then((r) => saveToken(r.token))
 				.catch((e) => {
 					setEmailSent(false);
@@ -46,7 +51,7 @@ const PincodeLoginForm = ({ onSubmit, children, ...props }) => {
 					e.preventDefault();
 					if (emailSent) {
 						if (pinValue) {
-							loginPincode(pinValue, email, projectSlug)
+							API.loginPincode(pinValue, email, projectSlug)
 								.then((r) => saveToken(r.token))
 								.catch(onError);
 						} else {
@@ -101,7 +106,7 @@ const PincodeLoginPinInput = ({ onChange = () => {}, ...props }) => {
 };
 
 const PincodeLoginClearButton = ({
-	onClick = () => {},
+	onClick = (e) => {},
 	children,
 	...props
 }) => {
@@ -123,7 +128,7 @@ const PincodeLoginClearButton = ({
 };
 
 const PincodeLoginResendButton = ({
-	onClick = () => {},
+	onClick = (e) => {},
 	children,
 	...props
 }) => {

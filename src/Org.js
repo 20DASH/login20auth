@@ -1,5 +1,4 @@
 import { useEffect, createContext, useContext, useState } from "react";
-import * as api from "./API.js";
 import { parseToken, useAuth } from "./authContext.js";
 
 const OrgContext = createContext({
@@ -18,7 +17,7 @@ const OrgContext = createContext({
 export const useOrg = () => useContext(OrgContext);
 
 export function OrgProvider({ onError = (e) => console.log(e), children }) {
-	const { token, saveToken, logout, projectSlug } = useAuth();
+	const { token, saveToken, logout, projectSlug, API } = useAuth();
 
 	const [orgList, setOrgList] = useState([]);
 	const [currentOrgID, setCurrentOrgID] = useState(null);
@@ -39,7 +38,7 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 
 	const switchOrg = async (orgID) => {
 		try {
-			const response = await api.SwitchOrganization(
+			const response = await API.SwitchOrganization(
 				orgID,
 				token,
 				projectSlug
@@ -52,7 +51,7 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 
 	const createOrg = async (name) => {
 		try {
-			const resultado = await api.CreateOrganization(
+			const resultado = await API.CreateOrganization(
 				name,
 				token,
 				projectSlug
@@ -70,10 +69,10 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 			if (nextOrgID) {
 				const oldToken = token;
 				await switchOrg(nextOrgID);
-				await api.DeleteOrganization(oldToken, projectSlug);
+				await API.DeleteOrganization(oldToken, projectSlug);
 				await switchOrg(nextOrgID);
 			} else {
-				await api.DeleteOrganization(token, projectSlug);
+				await API.DeleteOrganization(token, projectSlug);
 				logout();
 			}
 		} catch (e) {
@@ -87,10 +86,10 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 			if (nextOrgID) {
 				const oldToken = token;
 				await switchOrg(nextOrgID);
-				await api.LeaveOrganization(oldToken, projectSlug);
+				await API.LeaveOrganization(oldToken, projectSlug);
 				await switchOrg(nextOrgID);
 			} else {
-				await api.LeaveOrganization(token, projectSlug);
+				await API.LeaveOrganization(token, projectSlug);
 				logout();
 			}
 		} catch (e) {
@@ -108,7 +107,7 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 				switchOrg,
 				orgMembers: async () => {
 					try {
-						return await api.ListOrganizationMembers(
+						return await API.ListOrganizationMembers(
 							token,
 							projectSlug
 						);
@@ -118,7 +117,7 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 				},
 				addOrUpdateOrgMember: async (email, role) => {
 					try {
-						return api.AddOrganizationMember(
+						return API.AddOrganizationMember(
 							token,
 							email,
 							role,
@@ -130,7 +129,7 @@ export function OrgProvider({ onError = (e) => console.log(e), children }) {
 				},
 				deleteOrgMember: async (email) => {
 					try {
-						return await api.DeleteOrganizationMember(
+						return await API.DeleteOrganizationMember(
 							token,
 							email,
 							projectSlug

@@ -220,8 +220,6 @@ export default function Page() {
 		<Provider20Auth
 
 			projectSlug="..."
-			onStartLogin={handleStart}
-			onError={handleError}
 		>
 			<LoginWall login={
 				<>

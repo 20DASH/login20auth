@@ -2,12 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { AuthContext, parseToken } from "./authContext.js";
+import API from "./API.js";
 
 export default function Provider20Auth({
 	children,
 	projectSlug,
-	onError = () => {},
-	onStartLogin = () => {},
+	isProd = false,
+	onError = (err) => {},
 }) {
 	if (!projectSlug) {
 		throw Error(
@@ -51,11 +52,11 @@ export default function Provider20Auth({
 				let tokenExpDate = parseToken(token).exp;
 				if (!tokenExpDate) throw Error();
 				if (Date.now() / 1000 > tokenExpDate) {
-					onError("expired token");
+					onError("Expired token");
 					setToken(null);
 				}
 			} catch (error) {
-				onError("invalid token");
+				onError("Invalid token");
 				setToken(null);
 			}
 		}
@@ -68,8 +69,7 @@ export default function Provider20Auth({
 		savePic,
 		profilePic,
 		projectSlug,
-		onStartLogin,
-		onError,
+		API: new API(isProd),
 	};
 
 	return (

@@ -23,8 +23,7 @@ export const AuthContext = createContext({
 	savePic: () => {},
 	profilePic: null,
 	projectSlug: null,
-	onStartLogin: () => {},
-	onError: () => {},
+	API: {},
 });
 
 export const useAuth = () => useContext(AuthContext);
