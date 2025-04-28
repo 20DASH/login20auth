@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { AuthContext, parseToken } from "./authContext.js";
+import API from "./API.js";
 
 export default function Provider20Auth({
 	children,
 	projectSlug,
-	onError=(err)=>{}
+	isProd = false,
+	onError = (err) => {},
 }) {
 	if (!projectSlug) {
 		throw Error(
@@ -66,7 +68,8 @@ export default function Provider20Auth({
 		saveToken,
 		savePic,
 		profilePic,
-		projectSlug
+		projectSlug,
+		API: API(isProd),
 	};
 
 	return (

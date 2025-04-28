@@ -1,18 +1,22 @@
 // GoogleLogin.js
 import React from "react";
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
-import { loginGoogle } from "./API.js";
 import { useAuth } from "./authContext.js";
 
-const InnerComponent = ({ onClick, children, onStartLogin, onError, ...buttonProps }) => {
-	const { saveToken, savePic, projectSlug } =
-		useAuth();
+const InnerComponent = ({
+	onClick,
+	children,
+	onStartLogin,
+	onError,
+	...buttonProps
+}) => {
+	const { saveToken, savePic, projectSlug, API } = useAuth();
 
 	const handleGLogin = useGoogleLogin({
 		onSuccess: (response) => {
 			onStartLogin(); // tell Login20Auth login has started
 
-			loginGoogle(response.access_token, projectSlug)
+			API.loginGoogle(response.access_token, projectSlug)
 				.then((backendRes) => {
 					saveToken(backendRes.token);
 					savePic(backendRes.pic);
@@ -47,10 +51,24 @@ const InnerComponent = ({ onClick, children, onStartLogin, onError, ...buttonPro
 	);
 };
 
-const GoogleLogin = ({ clientID, children, onStartLogin=()=>{}, onError=(err)=>{}, onClick=(e)=>{}, ...buttonProps }) => {
+const GoogleLogin = ({
+	clientID,
+	children,
+	onStartLogin = () => {},
+	onError = (err) => {},
+	onClick = (e) => {},
+	...buttonProps
+}) => {
 	return (
 		<GoogleOAuthProvider clientId={clientID}>
-			<InnerComponent onStartLogin={onStartLogin} onError={onError} onClick={onClick} {...buttonProps}>{children}</InnerComponent>
+			<InnerComponent
+				onStartLogin={onStartLogin}
+				onError={onError}
+				onClick={onClick}
+				{...buttonProps}
+			>
+				{children}
+			</InnerComponent>
 		</GoogleOAuthProvider>
 	);
 };

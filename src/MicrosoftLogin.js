@@ -7,12 +7,17 @@ import {
 } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 
-import { loginMicrosoft, microsoftProfilePicture } from "./API.js";
 import { useAuth } from "./authContext.js";
 
-const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>{}, onError=(message)=>{}, ...buttonProps }) => {
-	const { saveToken, savePic, projectSlug } =
-		useAuth();
+const MicrosoftLogin = ({
+	clientID,
+	children,
+	onClick = (e) => {},
+	onStartLogin = () => {},
+	onError = (message) => {},
+	...buttonProps
+}) => {
+	const { saveToken, savePic, projectSlug, API } = useAuth();
 
 	const msalConfig = {
 		auth: {
@@ -54,8 +59,7 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 				console.log("token da microsoft: ", account.idToken);
 				console.log("projectSlug: ", projectSlug);
 
-				
-				const token = await loginMicrosoft(
+				const token = await API.loginMicrosoft(
 					account.idToken,
 					projectSlug
 				);
@@ -66,7 +70,7 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 					scopes: ["User.Read"],
 					account: account,
 				});
-				const profilePic = await microsoftProfilePicture(
+				const profilePic = await API.microsoftProfilePicture(
 					tokenResponse.accessToken
 				);
 				savePic(profilePic);
@@ -74,7 +78,7 @@ const MicrosoftLogin = ({ clientID, children, onClick=(e)=>{}, onStartLogin=()=>
 				onError(error);
 			}
 		},
-		[loginMicrosoft, microsoftProfilePicture, msalInstance]
+		[API, msalInstance]
 	);
 
 	useEffect(() => {
