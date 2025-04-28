@@ -7,7 +7,7 @@ import API from "./API.js";
 export default function Provider20Auth({
 	children,
 	projectSlug,
-	isProd = false,
+	isProd = true,
 	onError = (err) => {},
 }) {
 	if (!projectSlug) {

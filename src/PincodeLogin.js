@@ -20,6 +20,7 @@ const PincodeLoginForm = ({
 
 	const sendEmail = () => {
 		if (email) {
+			onStartLogin();
 			setEmailSent(true);
 			API.loginEmail(email, projectSlug)
 				.then((r) => saveToken(r.token))

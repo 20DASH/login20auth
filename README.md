@@ -4,11 +4,11 @@ Essa biblioteca é feita para servir de base para qualquer caso que precisemos f
 
 No momento, 20AUTH suporta três tipos de login:
 
--   pincode, enviado por email
+-   pincode, enviado por email (temporariamente não funciona)
 -   Google
 -   Microsoft
 
-> **Nota:** Alguns valores são sempre os mesmos, mas são sensíveis: o clientID do Google e Microsoft. Eles devem ser inclusos como variáveis de ambiente. Mas para compatibilidade com mais de um framework, não foi definido nome padrão da variável; ela deve ser passada diretamente aos componentes que exigem.
+> **Nota:** Alguns valores são sempre os mesmos, mas são sensíveis: o clientID do Google e Microsoft. Eles devem ser inclusos como variáveis de ambiente. Mas para compatibilidade com mais de um framework, não foi definido nome padrão da variável; ela deve ser passada diretamente aos respectivos componentes.
 
 ## Instalação
 
@@ -87,12 +87,13 @@ Componente Provider que disponibiliza o contexto de autenticação via `useAuth`
 -   `projectSlug`: identificador do projeto
 -   `onStartLogin` (opcional): função para ser chamada quando entrar num dialogo com um provedor de oauth ou ao enviar o email
 -   `onError`(opcional): função para ser chamada em erros de login
+-   `isProd`(opcional): booleano se deve usar ambiente de autenticação dev ou prod. Por padrão, é `true`
 
 ### `<LoginWall>`
 
 Componente que só exibe os filhos de usuário estiver autenticado. Possui o prop:
 
--   `login`: elemento para ser exibido se não estiver autenticado, normalmente o formulário de login. O dormulário deve ser composto pelos elementos a seguir.
+-   `login`: elemento para ser exibido se não estiver autenticado, normalmente o formulário de login. O formulário deve ser composto pelos elementos a seguir.
 
 ### `<GoogleLogin>`
 
@@ -151,15 +152,11 @@ Internamente é um `<input type="text">` e aceita todas as props nativas de um.
 
 Botão para limpar o estado do formulário ou remover o código inserido.
 
-#### Uso:
-
 Internamente é um `<button>` e aceita todas as props nativas de um.
 
 ### `<PincodeLoginResendButton>`
 
 Botão para reenviar o código PIN por email.
-
-#### Uso:
 
 Internamente é um `<button>` e aceita todas as props nativas de um.
 
@@ -214,23 +211,40 @@ function MyPincodeFields() {
 
 export default function Page() {
 	const handleStart = () => console.log("Login started");
-	const handleError = (err) => console.log("Login error:", err);
 
 	return (
 		<Provider20Auth
 
 			projectSlug="..."
+			isProd={false}
 		>
-			<LoginWall login={
-				<>
-					<GoogleLogin clientID="..."> Google </GoogleLogin>
-					<MicrosoftLogin clientID="..."> Microsoft </MicrosoftLogin>
-					<PincodeLoginForm>
-						<!--Usa um componente aninhado para permitir usePincode-->
-						<MyPincodeFields />
-					</PincodeLoginForm>
-				</>
-			}>
+			<LoginWall
+				login={
+					<>
+						<GoogleLogin
+							clientID="..."
+							onError = {e => console.log(e)}
+							onStartLogin={onStartLogin}
+						>
+							Google
+						</GoogleLogin>
+						<MicrosoftLogin
+							clientID="..."
+							onError = {e => console.log(e)}
+							onStartLogin={onStartLogin}
+						>
+							Microsoft
+						</MicrosoftLogin>
+						<PincodeLoginForm
+							onError = {e => console.log(e)}
+							onStartLogin={onStartLogin}
+						>
+							<!--Usa um componente aninhado para permitir usePincode-->
+							<MyPincodeFields />
+						</PincodeLoginForm>
+					</>
+				}
+			>
 				<Dashboard />
 			</ LoginWall>
 		</Provider20Auth>
