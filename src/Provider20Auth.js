@@ -69,7 +69,7 @@ export default function Provider20Auth({
 		savePic,
 		profilePic,
 		projectSlug,
-		API: API(isProd),
+		API: new API(isProd),
 	};
 
 	return (
