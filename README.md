@@ -45,15 +45,16 @@ Hook que fornece informações sobre a autenticação do usuário.
 
 ---
 
-### `usePincode()`
+### `Pincode.usePincode()`
 
 Hook que fornece o estado da autenticação via pincode.
 
 #### Retorna:
 
 -   `emailSent: boolean` – Indica se o código PIN foi enviado para o email.
+-   `email: string` – O email para onde foi enviado um pin.
 
-> **Nota:** Deve ser usado dentro de um `<PincodeLoginForm>`.
+> **Nota:** Deve ser usado dentro de um `<Pincode.Form>`.
 
 ---
 
@@ -115,7 +116,7 @@ Exemplo:
 <MicrosoftLogin onClick={someFunc} clientID="XXX-XXX" />
 ```
 
-### `<PincodeLoginForm>`
+### `<Pincode.Form>`
 
 Provider para o fluxo de autenticação via pincode.
 
@@ -126,13 +127,13 @@ Provider para o fluxo de autenticação via pincode.
 Exemplo:
 
 ```jsx
-<PincodeLoginForm className="pincode-form">
-	<PincodeLoginEmailInput />
-	<PincodeLoginPinInput />
-</PincodeLoginForm>
+<Pincode.Form className="pincode-form">
+	<Pincode.EmailInput />
+	<Pincode.PinInput />
+</Pincode.Form>
 ```
 
-### `<PincodeLoginEmailInput>`
+### `<Pincode.EmailInput>`
 
 Input para o usuário inserir seu email.
 
@@ -140,7 +141,7 @@ Input para o usuário inserir seu email.
 
 Internamente é um `<input type="email">` e aceita todas as props nativas de um.
 
-### `<PincodeLoginPinInput>`
+### `<Pincode.PinInput>`
 
 Input para inserção do código PIN.
 
@@ -148,13 +149,13 @@ Input para inserção do código PIN.
 
 Internamente é um `<input type="text">` e aceita todas as props nativas de um.
 
-### `<PincodeLoginClearButton>`
+### `<Pincode.ClearButton>`
 
 Botão para limpar o estado do formulário ou remover o código inserido.
 
 Internamente é um `<button>` e aceita todas as props nativas de um.
 
-### `<PincodeLoginResendButton>`
+### `<Pincode.ResendButton>`
 
 Botão para reenviar o código PIN por email.
 
@@ -165,17 +166,40 @@ Internamente é um `<button>` e aceita todas as props nativas de um.
 ## Exemplo Completo
 
 ```jsx
-"use client";
+"use client"; // necessário em Next.js
+
 import {
 	Provider20Auth,
 	LoginWall,
 	GoogleLogin,
 	MicrosoftLogin,
-	Pincode
+	useAuth,
+	Pincode,
 } from "login20auth";
 
+const PincodeFields = () => {
+	const { emailSent } = Pincode.usePincode();
+	return (
+		<>
+			{emailSent ? (
+				<>
+					<Pincode.ClearButton>
+						PincodeLoginClearButton
+					</Pincode.ClearButton>
+					<Pincode.ResendButton>
+						PincodeLoginResendButton
+					</Pincode.ResendButton>
+					<Pincode.PinInput />
+				</>
+			) : (
+				<Pincode.EmailInput />
+			)}
+			<input type="submit" />
+		</>
+	);
+};
 
-function Dashboard() {
+const Dashboard = () => {
 	const { token, logout, profilePic } = useAuth();
 
 	return (
@@ -185,71 +209,42 @@ function Dashboard() {
 			<button onClick={logout}>Log Out</button>
 		</div>
 	);
-}
+};
 
-function MyPincodeFields() {
-	const { emailSent } = usePincode();
+const AdminPanel = () => {
 	return (
-		<>
-			{emailSent ? (
-				<>
-					<PincodeLoginClearButton>
-						PincodeLoginClearButton
-					</PincodeLoginClearButton>
-					<PincodeLoginResendButton>
-						PincodeLoginResendButton
-					</PincodeLoginResendButton>
-					<PincodeLoginPinInput />
-				</>
-			) : (
-				<PincodeLoginEmailInput />
-			)}
-			<input type="submit" />
-		</>
-	);
-}
-
-export default function Page() {
-	const handleStart = () => console.log("Login started");
-
-	return (
-		<Provider20Auth
-			projectSlug="..."
-			isProd={false}
-			onError = {e => console.log(e)}
-		>
+		<Provider20Auth projectSlug="..." onError={(e) => console.log(e)}>
 			<LoginWall
 				login={
 					<>
 						<GoogleLogin
 							clientID="..."
-							onError = {e => console.log(e)}
-							onStartLogin={onStartLogin}
+							onError={(e) => console.log(e)}
+							onStartLogin={() => {}}
 						>
 							Google
 						</GoogleLogin>
 						<MicrosoftLogin
 							clientID="..."
-							onError = {e => console.log(e)}
-							onStartLogin={onStartLogin}
+							onError={(e) => console.log(e)}
+							onStartLogin={() => {}}
 						>
 							Microsoft
 						</MicrosoftLogin>
-						<PincodeLoginForm
-							onError = {e => console.log(e)}
-							onStartLogin={onStartLogin}
+						<Pincode.Form
+							onError={(e) => console.log(e)}
+							onStartLogin={() => {}}
 						>
-							<!--Usa um componente aninhado para permitir usePincode-->
-							<MyPincodeFields />
-						</PincodeLoginForm>
+							<PincodeFields />
+						</Pincode.Form>
 					</>
 				}
 			>
 				<Dashboard />
-			</ LoginWall>
+			</LoginWall>
 		</Provider20Auth>
 	);
-}
+};
 ```
 
 # A fazer
