@@ -10,6 +10,15 @@ No momento, 20AUTH suporta três tipos de login:
 
 > **Nota:** Alguns valores são sempre os mesmos, mas são sensíveis: o clientID do Google e Microsoft. Eles devem ser inclusos como variáveis de ambiente. Mas para compatibilidade com mais de um framework, não foi definido nome padrão da variável; ela deve ser passada diretamente aos respectivos componentes.
 
+Para funcionar em novos domínios (que não o local), é preciso adicionar na lista branca de domínios do google e microsoft.
+
+### Google:
+
+-   Login no cloud console em `tito@20dash.com`
+-   Selecionar o projeto 20auth
+-   APIs & services > OAuth consent screen > Clients > 20auth
+-   Adicionar domínio em `Authorized JavaScript origins`
+
 ## Instalação
 
 ```bash
